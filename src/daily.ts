@@ -11,8 +11,7 @@ interface DailyRoomData {
   url: string;
 }
 
-interface TokenConfig {
-  roomName: string;
+export interface Domain {
   domainID: string;
 }
 
@@ -61,40 +60,53 @@ export async function createRoom(apiKey: string): Promise<DailyRoomData> {
   return roomData;
 }
 
-function getTokenConfig(roomURL: string): TokenConfig {
+function getRoomName(roomURL: string): string {
   const url = new URL(roomURL);
   const roomName = url.pathname.replace("/", "");
-
-  const { hostname } = url;
-
-  const parts = hostname.split(".");
-  if (parts.length !== 3) {
-    throw new Error(
-      `unexpected hostname; must have Daily account subdomain: ${hostname}`
-    );
-  }
-  const domainID = parts[0];
-  return <TokenConfig>{
-    roomName,
-    domainID,
-  };
+  return roomName;
 }
+
+export function getDomainID(apiKey: string): Promise<string> {
+  const headers = {
+    Authorization: `Bearer ${apiKey}`,
+    "Content-Type": "application/json",
+  };
+
+  const url = dailyAPIURL;
+  const errMsg = "failed to get domain ID";
+  return axios
+    .get(url, { headers })
+    .then((res) => {
+      if (res.status !== 200 || !res.data) {
+        throw new Error(errMsg);
+      }
+      return res.data.domain_id;
+    })
+    .catch((error) => {
+      throw new Error(`${errMsg}: ${error})`);
+    });
+}
+
 // getMeetingToken() obtains a meeting token for a room from Daily.
 export function getMeetingToken(
   apiKey: string,
   roomURL: string,
-  opts: TokenOptions | null = null
+  opts: TokenOptions & Domain
 ): string {
   const now = Math.floor(Date.now() / 1000);
-  const defaultExp = now + 86400;
+  const defaultExp = now + 3600;
 
-  const c = getTokenConfig(roomURL);
+  const roomName = getRoomName(roomURL);
+  const { domainID } = opts;
+  if (!domainID) {
+    throw new Error("options must contain domain ID");
+  }
 
   // We are going to self-sign these, removing
   // need for a round-trip.
   const payload = <DailyTokenPayload>{
-    r: c.roomName,
-    d: c.domainID,
+    r: roomName,
+    d: domainID,
     exp: defaultExp,
     o: false,
     iat: now,
@@ -116,9 +128,9 @@ export function getMeetingToken(
   if (role === "moderator") {
     payload.o = true;
   }
-
+  const jp = JSON.stringify(payload);
   try {
-    const token = jwt.sign(payload, apiKey);
+    const token = jwt.sign(jp, apiKey);
     return token;
   } catch (e) {
     throw new Error(`failed to create self-signed JWT: ${e.toString()}`);

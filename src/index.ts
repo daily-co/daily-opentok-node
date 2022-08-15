@@ -1,5 +1,5 @@
 import { Session, TokenOptions } from "opentok";
-import { createRoom, getMeetingToken } from "./daily";
+import { createRoom, getMeetingToken, Domain, getDomainID } from "./daily";
 
 type MediaMode = "routed" | "relayed";
 type ArchiveMode = "always" | "manual";
@@ -16,10 +16,15 @@ type OTOptions = {
 type Callback = (error: Error | null, session?: Session) => void;
 
 export default class OpenTok {
-  readonly apiKey: string;
+  private readonly apiKey: string;
 
   constructor(apiKey: string, _apiSecret: string) {
     this.apiKey = apiKey;
+  }
+
+  // getDomainID() retrieves a Daily domain ID
+  getDomainID(): Promise<string> {
+    return getDomainID(this.apiKey).then((id) => id);
   }
 
   // createSession() creates a Daily room and wrangles it
@@ -38,8 +43,10 @@ export default class OpenTok {
   }
 
   // generateToken() returns a self-signed Daily meeting token
-  generateToken(sessionID: string, options?: TokenOptions): string {
-    // The session ID is actually our Daily room URL,
+  generateToken(sessionID: string, options?: TokenOptions & Domain): string {
+    if (!options?.domainID) {
+      throw new Error("expecting Daily domain ID in options");
+    }
     return getMeetingToken(this.apiKey, sessionID, options);
   }
 }
