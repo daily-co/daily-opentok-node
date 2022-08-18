@@ -15,7 +15,10 @@
     "prettier/prettier": ["error"],
     "react/jsx-filename-extension": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ]
   },
   "settings": {
     "import/resolver": {
