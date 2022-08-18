@@ -15,11 +15,16 @@ type OTOptions = {
 // What we'll call after a session is created
 type Callback = (error: Error | null, session?: Session) => void;
 
-export default class OpenTok {
+class OpenTokClass {
   private readonly apiKey: string;
+
+  private domainID: string;
 
   constructor(apiKey: string, _apiSecret: string) {
     this.apiKey = apiKey;
+    this.getDomainID().then((id) => {
+      this.domainID = id;
+    });
   }
 
   // getDomainID() retrieves a Daily domain ID
@@ -44,9 +49,17 @@ export default class OpenTok {
 
   // generateToken() returns a self-signed Daily meeting token
   generateToken(sessionID: string, options?: TokenOptions & Domain): string {
-    if (!options?.domainID) {
-      throw new Error("expecting Daily domain ID in options");
-    }
-    return getMeetingToken(this.apiKey, sessionID, options);
+    // if (!options?.domainID) {
+    //   throw new Error("expecting Daily domain ID in options");
+    // }
+    return getMeetingToken(this.apiKey, sessionID, {
+      ...options,
+      domainID: this.domainID,
+    });
   }
+}
+
+export default function OpenTok(apiKey: string, apiSecret: string, env: {}) {
+  console.log(env);
+  return new OpenTokClass(apiKey, apiSecret);
 }
