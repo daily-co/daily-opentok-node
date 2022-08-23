@@ -242,8 +242,11 @@ class OpenTokClass {
   createSession(_opts: OTOptions, callback: Callback) {
     createRoom(this.apiKey)
       .then((room) => {
-        const session = <Session>{
+        const session = {
           sessionId: room.url,
+          mediaMode: "routed",
+          archiveMode: "manual",
+          ot: this,
         };
         callback(null, session);
       })
