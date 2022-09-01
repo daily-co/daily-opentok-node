@@ -45,9 +45,7 @@ class OpenTokClass {
 
   constructor(apiKey: string, _apiSecret: string) {
     this.apiKey = apiKey;
-    this.getDomainID().then((id) => {
-      this.domainID = id;
-    });
+    this.domainID = "";
   }
 
   public deleteArchive(
@@ -233,8 +231,11 @@ class OpenTokClass {
   }
 
   // getDomainID() retrieves a Daily domain ID
-  getDomainID(): Promise<string> {
-    return getDomainID(this.apiKey).then((id) => id);
+  public getDomainID(): Promise<string> {
+    return getDomainID(this.apiKey).then((id) => {
+      this.domainID = id;
+      return id;
+    });
   }
 
   // createSession() creates a Daily room and wrangles it
@@ -256,10 +257,12 @@ class OpenTokClass {
   }
 
   // generateToken() returns a self-signed Daily meeting token
-  generateToken(sessionID: string, options?: TokenOptions & Domain): string {
-    // if (!options?.domainID) {
-    //   throw new Error("expecting Daily domain ID in options");
-    // }
+  generateToken(sessionID: string, options?: TokenOptions): string {
+    if (!this.domainID) {
+      throw new Error(
+        "Daily domain ID is missing. Did you call getDomainID() first?"
+      );
+    }
     return getMeetingToken(this.apiKey, sessionID, {
       ...options,
       domainID: this.domainID,
@@ -267,7 +270,6 @@ class OpenTokClass {
   }
 }
 
-export default function OpenTok(apiKey: string, apiSecret: string, env: {}) {
-  console.log(env);
-  return new OpenTokClass(apiKey, apiSecret);
+export default function OpenTok(apiKey: string, domainID: string, env: {}) {
+  return new OpenTokClass(apiKey, domainID);
 }
