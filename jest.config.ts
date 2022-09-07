@@ -1,8 +1,8 @@
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'node',
+  preset: "ts-jest",
+  testEnvironment: "node",
   transform: {
-    '^.+\\.(ts|js|tsx)$': 'ts-jest',
+    "^.+\\.(ts|js|tsx)$": "ts-jest",
   },
-  transformIgnorePatterns: [`/node_modules/(?!(sip\.js))`],
+  transformIgnorePatterns: [`/node_modules/(?!(sip.js))`],
 };

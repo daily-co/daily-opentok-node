@@ -16,8 +16,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "jest src/",
-    "lint": "eslint src/",
+    "jest": "jest",
+    "test": "npm run lint && jest",
+    "lint": "npm run lint:js && npm run lint:ts",
+    "lint:js": "eslint src/",
     "lint:ts": "tsc --noEmit"
   },
   "author": "Liza Shulyayeva",
