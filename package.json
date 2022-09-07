@@ -6,12 +6,12 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/opentok.js",
+  "main": "./dist/opentok.cjs",
   "module": "./dist/opentok.mjs",
   "exports": {
     ".": {
       "import": "./dist/opentok.mjs",
-      "require": "./dist/opentok.js"
+      "require": "./dist/opentok.cjs"
     }
   },
   "types": "./dist/src/index.d.ts",
