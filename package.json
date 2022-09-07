@@ -14,6 +14,7 @@
       "require": "./dist/opentok.js"
     }
   },
+  "types": "./dist/src/index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "jest": "jest",
