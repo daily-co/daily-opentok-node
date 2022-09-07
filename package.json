@@ -15,7 +15,7 @@
     }
   },
   "scripts": {
-    "build": "tsc",
+    "build": "rollup -c",
     "jest": "jest",
     "test": "npm run lint && jest",
     "lint": "npm run lint:js && npm run lint:ts",
