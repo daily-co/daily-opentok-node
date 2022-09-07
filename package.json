@@ -24,7 +24,7 @@
     "lint:ts": "tsc --noEmit"
   },
   "author": "Liza Shulyayeva",
-  "license": "ISC",
+  "license": "BSD-2-Clause",
   "devDependencies": {
     "@rollup/plugin-typescript": "^8.5.0",
     "@types/jest": "^28.1.6",
