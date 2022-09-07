@@ -17,7 +17,7 @@ const OpenTok = require("opentok");
 to this:
 
 ```typescript
-const OpenTok = require("daily-opentok-node").default;
+const OpenTok = require("daily-opentok-node");
 ```
 
 Also when creating a new `OT` object, replace any occurrences of the following code:
