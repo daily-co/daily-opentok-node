@@ -43,9 +43,9 @@ class OpenTokClass {
 
   private domainID: string;
 
-  constructor(apiKey: string, _apiSecret: string) {
+  constructor(apiKey: string, domainID: string = "") {
     this.apiKey = apiKey;
-    this.domainID = "";
+    this.domainID = domainID;
   }
 
   public deleteArchive(
@@ -270,6 +270,6 @@ class OpenTokClass {
   }
 }
 
-export default function OpenTok(apiKey: string, domainID: string, env: {}) {
+export default function OpenTok(apiKey: string, domainID?: string, env?: {}) {
   return new OpenTokClass(apiKey, domainID);
 }

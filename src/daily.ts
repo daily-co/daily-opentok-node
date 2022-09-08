@@ -133,6 +133,9 @@ export function getMeetingToken(
     const token = jwt.sign(jp, apiKey);
     return token;
   } catch (e) {
-    throw new Error(`failed to create self-signed JWT: ${e.toString()}`);
+    if (e instanceof Error) {
+      throw new Error(`failed to create self-signed JWT: ${e.toString()}`);
+    }
+    throw new Error(`failed to create self-signed JWT: ${e}`);
   }
 }
