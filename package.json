@@ -16,6 +16,7 @@
   },
   "types": "./dist/src/index.d.ts",
   "scripts": {
+    "prepublishOnly": "npm run build",
     "clean": "rimraf dist",
     "build": "npm run clean && rollup -c",
     "jest": "jest",
