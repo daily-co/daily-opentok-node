@@ -28,8 +28,8 @@ const OT = new OpenTok('openTokAPIKey', 'openTokAPISecret');
 
 with this:
 
-```tsx
-const OT = new OpenTok('dailyApiKey', 'dailyApiKey');
+```typescript
+const OT = new OpenTok('dailyApiKey');
 await OT.getDomainID();
 ```
 
