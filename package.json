@@ -21,7 +21,8 @@
     "build": "npm run clean && rollup -c",
     "jest": "jest",
     "test": "npm run lint && jest",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "lintFix": "eslint src/ --fix"
   },
   "author": "Liza Shulyayeva",
   "license": "BSD-2-Clause",
