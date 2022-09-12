@@ -1,5 +1,4 @@
 /* eslint-disable class-methods-use-this */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Archive,
   ArchiveOptions,
@@ -19,7 +18,7 @@ import {
   Token,
   TokenOptions,
 } from "opentok";
-import { createRoom, getMeetingToken, Domain, getDomainID } from "./daily";
+import { createRoom, getMeetingToken, getDomainID } from "./daily";
 
 function notImplemented(): never {
   throw new Error("Method not implemented.");
@@ -48,56 +47,56 @@ class OpenTokClass {
     this.domainID = domainID;
   }
 
-  public deleteArchive(
-    archiveId: string,
-    callback: (error: Error | null) => void
+  deleteArchive(
+    _archiveId: string,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public dial(
-    sessionId: string,
-    token: Token,
-    sipUri: string,
-    options: DialOptions,
-    callback: (error: Error | null, sipInterconnect: SipInterconnect) => void
+  dial(
+    _sessionId: string,
+    _token: Token,
+    _sipUri: string,
+    _options: DialOptions,
+    _callback: (error: Error | null, sipInterconnect: SipInterconnect) => void
   ): void {
     notImplemented();
   }
 
-  public forceDisconnect(
-    sessionId: string,
-    connectionId: string,
-    callback: (error: Error | null) => void
+  forceDisconnect(
+    _sessionId: string,
+    _connectionId: string,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public getArchive(
-    archiveId: string,
-    callback: (error: Error | null, archive?: Archive) => void
+  getArchive(
+    _archiveId: string,
+    _callback: (error: Error | null, archive?: Archive) => void
   ): void {
     notImplemented();
   }
 
-  public getBroadcast(
-    broadcastId: string,
-    callback: (error: Error | null, broadcast?: Broadcast) => void
+  getBroadcast(
+    _broadcastId: string,
+    _callback: (error: Error | null, broadcast?: Broadcast) => void
   ): void {
     notImplemented();
   }
 
-  public getStream(
-    sessionId: string,
-    options: StreamId,
-    callback: (error: Error | null, stream?: Stream) => void
+  getStream(
+    _sessionId: string,
+    _options: StreamId,
+    _callback: (error: Error | null, stream?: Stream) => void
   ): void {
     notImplemented();
   }
 
-  public listArchives(
-    options: ListArchivesOptions,
-    callback: (
+  listArchives(
+    _options: ListArchivesOptions,
+    _callback: (
       error: Error | null,
       archives?: Archive[],
       totalCount?: number
@@ -106,132 +105,132 @@ class OpenTokClass {
     notImplemented();
   }
 
-  public listBroadcasts(
-    options: ListBroadcastsOptions,
-    callback: (error: Error | null, broadcasts?: Broadcast[]) => void
+  listBroadcasts(
+    _options: ListBroadcastsOptions,
+    _callback: (error: Error | null, broadcasts?: Broadcast[]) => void
   ): void {
     notImplemented();
   }
 
-  public listStreams(
-    sessionId: string,
-    callback: (error: Error | null, streams?: Stream[]) => void
+  listStreams(
+    _sessionId: string,
+    _callback: (error: Error | null, streams?: Stream[]) => void
   ): void {
     notImplemented();
   }
 
-  public addArchiveStream(
-    archiveId: string,
-    streamId: string,
-    options: PatchStream,
-    callback: (error: Error | null) => void
+  addArchiveStream(
+    _archiveId: string,
+    _streamId: string,
+    _options: PatchStream,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public removeArchiveStream(
-    archiveId: string,
-    streamId: string,
-    options: PatchStream,
-    callback: (error: Error | null) => void
+  removeArchiveStream(
+    _archiveId: string,
+    _streamId: string,
+    _options: PatchStream,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public addBroadcastStream(
-    broadcastId: string,
-    streamId: string,
-    options: PatchStream,
-    callback: (error: Error | null) => void
+  addBroadcastStream(
+    _broadcastId: string,
+    _streamId: string,
+    _options: PatchStream,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public removeBroadcastStream(
-    broadcastId: string,
-    streamId: string,
-    options: PatchStream,
-    callback: (error: Error | null) => void
+  removeBroadcastStream(
+    _broadcastId: string,
+    _streamId: string,
+    _options: PatchStream,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public playDTMF(
-    sessionId: string,
-    connectionId: string,
-    digits: string,
-    callback: (error: Error | null) => void
+  playDTMF(
+    _sessionId: string,
+    _connectionId: string,
+    _digits: string,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public setArchiveLayout(
-    archiveId: string,
-    type: BroadcastLayoutType | "custom",
-    stylesheet: string | null,
-    callback: (error: Error | null) => void
+  setArchiveLayout(
+    _archiveId: string,
+    _type: BroadcastLayoutType | "custom",
+    _stylesheet: string | null,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public setBroadcastLayout(
-    broadcastId: string,
-    type: BroadcastLayoutType | "custom",
-    stylesheet: string | null,
-    callback: (error: Error | null) => void
+  setBroadcastLayout(
+    _broadcastId: string,
+    _type: BroadcastLayoutType | "custom",
+    _stylesheet: string | null,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public setStreamClassLists(
-    sessionId: string,
-    classListArray: ReadonlyArray<{ id: string; layoutClassList: string[] }>,
-    callback: (error: Error | null) => void
+  setStreamClassLists(
+    _sessionId: string,
+    _classListArray: ReadonlyArray<{ id: string; layoutClassList: string[] }>,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public signal(
-    sessionId: string,
-    connectionId: string | null,
-    data: SignalOptions,
-    callback: (error: Error | null) => void
+  signal(
+    _sessionId: string,
+    _connectionId: string | null,
+    _data: SignalOptions,
+    _callback: (error: Error | null) => void
   ): void {
     notImplemented();
   }
 
-  public startArchive(
-    sessionId: string,
-    options: ArchiveOptions,
-    callback: (error: Error | null, archive?: Archive) => void
+  startArchive(
+    _sessionId: string,
+    _options: ArchiveOptions,
+    _callback: (error: Error | null, archive?: Archive) => void
   ): void {
     notImplemented();
   }
 
-  public startBroadcast(
-    sessionId: string,
-    options: BroadcastOptions,
-    callback: (error: Error | null, broadcast: Broadcast) => void
+  startBroadcast(
+    _sessionId: string,
+    _options: BroadcastOptions,
+    _callback: (error: Error | null, broadcast: Broadcast) => void
   ): void {
     notImplemented();
   }
 
-  public stopArchive(
-    archiveId: string,
-    callback: (error: Error | null, archive?: Archive) => void
+  stopArchive(
+    _archiveId: string,
+    _callback: (error: Error | null, archive?: Archive) => void
   ): void {
     notImplemented();
   }
 
-  public stopBroadcast(
-    broadcastId: string,
-    callback: (error: Error | null, broadcast: BroadcastStopResponse) => void
+  stopBroadcast(
+    _broadcastId: string,
+    _callback: (error: Error | null, broadcast: BroadcastStopResponse) => void
   ): void {
     notImplemented();
   }
 
   // getDomainID() retrieves a Daily domain ID
-  public getDomainID(): Promise<string> {
+  getDomainID(): Promise<string> {
     return getDomainID(this.apiKey).then((id) => {
       this.domainID = id;
       return id;
@@ -270,6 +269,6 @@ class OpenTokClass {
   }
 }
 
-export default function OpenTok(apiKey: string, domainID?: string, env?: {}) {
+export default function OpenTok(apiKey: string, domainID?: string, _env?: {}) {
   return new OpenTokClass(apiKey, domainID);
 }
