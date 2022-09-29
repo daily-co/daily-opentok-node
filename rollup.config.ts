@@ -8,5 +8,5 @@ export default {
     { file: pkg.main, format: "cjs", exports: "default" },
     { file: pkg.module, format: "es" },
   ],
-  plugins: [typescript(), terser()],
+  plugins: [typescript(), terser({ ecma: 2015 })],
 };
