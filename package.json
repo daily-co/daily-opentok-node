@@ -1,6 +1,6 @@
 {
   "name": "daily-opentok-node",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A library to enable seamless substitution of OpenTok with Daily's REST API",
   "type": "module",
   "files": [
