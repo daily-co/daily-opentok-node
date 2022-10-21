@@ -11,6 +11,12 @@ interface DailyRoomData {
   url: string;
 }
 
+interface DailyRoomProperties {
+  start_video_off: boolean;
+  start_audio_off: boolean;
+  sfu_switchover: number;
+}
+
 export interface Domain {
   domainID: string;
 }
@@ -26,16 +32,23 @@ export interface DailyTokenPayload {
 const dailyAPIDomain = "daily.co";
 const dailyAPIURL = `https://api.${dailyAPIDomain}/v1`;
 
-export async function createRoom(apiKey: string): Promise<DailyRoomData> {
+export async function createRoom(
+  apiKey: string,
+  forceSFU = false
+): Promise<DailyRoomData> {
   const req = {
     // TODO: find out if OT sessions have a default
     // expiry time or any other default options that map
     // to Daily rooms.
-    properties: {
+    properties: <DailyRoomProperties>{
       start_audio_off: false,
       start_video_off: false,
     },
   };
+
+  if (forceSFU) {
+    req.properties.sfu_switchover = 0.5;
+  }
 
   // Prepare our headers, containing our Daily API key
   const headers = {
