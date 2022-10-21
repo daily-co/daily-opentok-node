@@ -239,12 +239,12 @@ class OpenTokClass {
 
   // createSession() creates a Daily room and wrangles it
   // into an OpenTok session object
-  createSession(_opts: OTOptions, callback: Callback) {
-    createRoom(this.apiKey)
+  createSession(opts: OTOptions, callback: Callback) {
+    createRoom(this.apiKey, opts.mediaMode === "routed")
       .then((room) => {
         const session = {
           sessionId: room.url,
-          mediaMode: "routed",
+          mediaMode: opts.mediaMode,
           archiveMode: "manual",
           ot: this,
         };
