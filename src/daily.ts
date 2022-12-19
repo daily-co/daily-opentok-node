@@ -21,12 +21,18 @@ export interface Domain {
   domainID: string;
 }
 
+export interface Data {
+  data?: string;
+}
+
 export interface DailyTokenPayload {
   r: string;
   d: string;
   exp: number;
   o: boolean;
   iat: number;
+  u?: string;
+  ud?: string;
 }
 
 const dailyAPIDomain = "daily.co";
@@ -104,7 +110,7 @@ export function getDomainID(apiKey: string): Promise<string> {
 export function getMeetingToken(
   apiKey: string,
   roomURL: string,
-  opts: TokenOptions & Domain
+  opts: TokenOptions & Domain & Data
 ): string {
   const now = Math.floor(Date.now() / 1000);
   const defaultExp = now + 3600;
@@ -123,6 +129,7 @@ export function getMeetingToken(
     exp: defaultExp,
     o: false,
     iat: now,
+    u: undefined,
   };
 
   const exp = opts?.expireTime;
@@ -141,6 +148,25 @@ export function getMeetingToken(
   if (role === "moderator") {
     payload.o = true;
   }
+
+  if (opts?.data) {
+    const dataObj = opts.data
+      .split('&')
+      .reduce((obj: { [key: string]: string }, pair) => {
+        const [key, value] = pair.split('=');
+        obj[key] = value;
+        return obj;
+      }, {});
+
+    if (dataObj?.username) {
+      payload.u = decodeURIComponent(dataObj.username);
+    }
+
+    if (dataObj?.uuid) {
+      payload.ud = decodeURIComponent(dataObj.uuid);
+    }
+  }
+
   const jp = JSON.stringify(payload);
   try {
     const token = jwt.sign(jp, apiKey);
