@@ -7,7 +7,7 @@ describe("Daily meeting token retrieval tests", () => {
     const secret = "very-very-secret";
     const roomURL = "https://mydomain.daily.co/roomname";
 
-    // Freeze the
+    // Freeze the time
     const now = Date.now();
     jest.spyOn(Date, "now").mockImplementation(() => now);
 
@@ -64,7 +64,7 @@ describe("Daily meeting token retrieval tests", () => {
     const secret = "very-very-secret";
     const roomURL = "https://mydomain.daily.co/roomname";
 
-    // Freeze the
+    // Freeze the time
     const now = Date.now();
     jest.spyOn(Date, "now").mockImplementation(() => now);
 
