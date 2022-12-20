@@ -139,7 +139,7 @@ export function getMeetingToken(
   if (opts?.data) {
     const data = opts?.data;
     if (data.length > 1024) {
-      throw new Error("Token data be a string with maximum length 1024");
+      throw new Error("Token data must have a maximum length 1024");
     }
     payload.otcd = data;
   }
