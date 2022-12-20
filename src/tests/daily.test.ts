@@ -59,4 +59,34 @@ describe("Daily meeting token retrieval tests", () => {
     const gotPayload = <DailyTokenPayload>jwt.decode(gotToken);
     expect(gotPayload).toStrictEqual(wantPayload);
   });
+
+  test("Success with custom data", () => {
+    const secret = "very-very-secret";
+    const roomURL = "https://mydomain.daily.co/roomname";
+
+    // Freeze the
+    const now = Date.now();
+    jest.spyOn(Date, "now").mockImplementation(() => now);
+
+    const domainID = "domainID";
+    const data = "somekey=somevalue;someotherkey=someothervalue;";
+    const wantPayload = <DailyTokenPayload>{
+      r: "roomname",
+      d: domainID,
+      // exp should be the default, 24 hours
+      exp: Math.floor(now / 1000) + 3600,
+      o: false,
+      iat: Math.floor(now / 1000),
+      otcd: data,
+    };
+
+    const opts = {
+      domainID,
+      data,
+    };
+
+    const gotToken = getMeetingToken(secret, roomURL, opts);
+    const gotPayload = <DailyTokenPayload>jwt.decode(gotToken);
+    expect(gotPayload).toStrictEqual(wantPayload);
+  });
 });
