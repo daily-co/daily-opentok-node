@@ -27,6 +27,7 @@ export interface DailyTokenPayload {
   exp: number;
   o: boolean;
   iat: number;
+  otcd: string;
 }
 
 const dailyAPIDomain = "daily.co";
@@ -133,6 +134,14 @@ export function getMeetingToken(
       );
     }
     payload.exp = exp;
+  }
+
+  if (opts?.data) {
+    const data = opts?.data;
+    if (data.length > 1024) {
+      throw new Error("Token data must have a maximum length 1024");
+    }
+    payload.otcd = data;
   }
 
   const role = opts?.role;
