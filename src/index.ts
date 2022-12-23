@@ -18,7 +18,12 @@ import {
   Token,
   TokenOptions,
 } from "opentok";
-import { createRoom, getMeetingToken, getDomainID } from "./daily";
+import {
+  createRoom,
+  getMeetingToken,
+  getDomainID,
+  DailyTokenPayload,
+} from "./daily";
 
 function notImplemented(): never {
   throw new Error("Method not implemented.");
@@ -256,16 +261,26 @@ class OpenTokClass {
   }
 
   // generateToken() returns a self-signed Daily meeting token
-  generateToken(sessionID: string, options?: TokenOptions): string {
-    if (!this.domainID) {
+  generateToken(
+    sessionID: string,
+    options?: TokenOptions,
+    dailyPayload?: DailyTokenPayload
+  ): string {
+    // The user may pass a domain ID with their Daily payload
+    if (!dailyPayload?.d && !this.domainID) {
       throw new Error(
         "Daily domain ID is missing. Did you call getDomainID() first?"
       );
     }
-    return getMeetingToken(this.apiKey, sessionID, {
-      ...options,
-      domainID: this.domainID,
-    });
+    return getMeetingToken(
+      this.apiKey,
+      sessionID,
+      {
+        ...options,
+        domainID: this.domainID,
+      },
+      dailyPayload
+    );
   }
 }
 

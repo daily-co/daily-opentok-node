@@ -21,6 +21,8 @@ export interface Domain {
   domainID: string;
 }
 
+// All Daily token claims can be found here:
+// https://docs.daily.co/reference/rest-api/meeting-tokens/self-signing-tokens
 export interface DailyTokenPayload {
   r: string;
   d: string;
@@ -28,6 +30,8 @@ export interface DailyTokenPayload {
   o: boolean;
   iat: number;
   otcd: string;
+  ud: string;
+  u: string;
 }
 
 const dailyAPIDomain = "daily.co";
@@ -102,54 +106,70 @@ export function getDomainID(apiKey: string): Promise<string> {
 }
 
 // getMeetingToken() obtains a meeting token for a room from Daily.
+// We are going to self-sign these, removing
+// need for a round-trip.
 export function getMeetingToken(
   apiKey: string,
   roomURL: string,
-  opts: TokenOptions & Domain
+  opts?: TokenOptions & Domain,
+  dailyPayload?: DailyTokenPayload
 ): string {
   const now = Math.floor(Date.now() / 1000);
-  const defaultExp = now + 3600;
+  const payload = dailyPayload ?? <DailyTokenPayload>{};
 
-  const roomName = getRoomName(roomURL);
-  const { domainID } = opts;
-  if (!domainID) {
-    throw new Error("options must contain domain ID");
+  // If passed, Daily payload properties take priority
+  // over other potential options.
+  if (!payload.r) {
+    const roomName = getRoomName(roomURL);
+    payload.r = roomName;
   }
-
-  // We are going to self-sign these, removing
-  // need for a round-trip.
-  const payload = <DailyTokenPayload>{
-    r: roomName,
-    d: domainID,
-    exp: defaultExp,
-    o: false,
-    iat: now,
-  };
-
-  const exp = opts?.expireTime;
-  if (exp) {
-    if (new Date(exp).getTime() <= 0) {
+  if (!payload.d) {
+    if (!opts || !opts.domainID) {
       throw new Error(
-        `invalid expire time provided. Expiry must be a UNIX time stamp: ${exp}`
+        "OpenTok options or Daily payload must contain domain ID"
       );
+    }
+    payload.d = opts.domainID;
+  }
+  if (!payload.exp) {
+    const defaultExp = now + 3600;
+    let exp = defaultExp;
+
+    const otOptsExp = opts?.expireTime;
+    if (otOptsExp) {
+      if (new Date(otOptsExp).getTime() <= 0) {
+        throw new Error(
+          `invalid expire time provided. Expiry must be a UNIX time stamp: ${exp}`
+        );
+      }
+      exp = otOptsExp;
     }
     payload.exp = exp;
   }
+  if (!payload.o) {
+    payload.o = false;
+  }
+  if (!payload.iat) {
+    payload.iat = now;
+  }
 
-  if (opts?.data) {
-    const data = opts?.data;
-    if (data.length > 1024) {
-      throw new Error("Token data must have a maximum length 1024");
+  // Handle OT options, if any, with their Daily equivalents
+  if (opts) {
+    const { data, role } = opts;
+    if (data) {
+      if (data.length > 1024) {
+        throw new Error("Token data must have a maximum length 1024");
+      }
+      payload.otcd = data;
     }
-    payload.otcd = data;
+
+    // We're going to treat a "moderator" as the equivalent of
+    // a Daily room "owner"
+    if (role === "moderator") {
+      payload.o = true;
+    }
   }
 
-  const role = opts?.role;
-  // We're going to treat a "moderator" as the equivalent of
-  // a Daily room "owner"
-  if (role === "moderator") {
-    payload.o = true;
-  }
   const jp = JSON.stringify(payload);
   try {
     const token = jwt.sign(jp, apiKey);
