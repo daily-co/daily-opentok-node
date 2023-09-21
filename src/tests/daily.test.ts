@@ -1,6 +1,13 @@
 import * as jwt from "jsonwebtoken";
-import { TokenOptions } from "opentok";
 import { DailyTokenPayload, Domain, getMeetingToken } from "../daily";
+
+type Role = "subscriber" | "publisher" | "moderator";
+interface TokenOptions {
+  role?: Role | undefined;
+  data?: string | undefined;
+  expireTime?: number | undefined;
+  initialLayoutClassList?: string[] | undefined;
+}
 
 const testSecret = "very-very-secret";
 const testDomainID = "some-domain-id";
