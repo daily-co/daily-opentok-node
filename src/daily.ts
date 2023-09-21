@@ -1,6 +1,13 @@
 import axios from "axios";
-import { TokenOptions } from "opentok";
 import * as jwt from "jsonwebtoken";
+
+type Role = "subscriber" | "publisher" | "moderator";
+interface TokenOptions {
+  role?: Role | undefined;
+  data?: string | undefined;
+  expireTime?: number | undefined;
+  initialLayoutClassList?: string[] | undefined;
+}
 
 // The data we'll expect to get from Daily on room creation.
 // Daily actually returns much more data, but these are the only
@@ -66,9 +73,11 @@ export async function createRoom(
   const roomErrMsg = "failed to create room";
   // We won't do any error logging here, delegating logging
   // and other error handling to the judgement of the caller.
-  const res = await axios.post(url, data, { headers }).catch((error) => {
-    throw new Error(`${roomErrMsg}: ${error})`);
-  });
+  const res = await axios
+    .post(url, data, { headers })
+    .catch((error: unknown) => {
+      throw new Error(`${roomErrMsg}: ${error})`);
+    });
 
   if (res.status !== 200 || !res.data) {
     throw new Error(roomErrMsg);
@@ -94,13 +103,13 @@ export function getDomainID(apiKey: string): Promise<string> {
   const errMsg = "failed to get domain ID";
   return axios
     .get(url, { headers })
-    .then((res) => {
+    .then((res: { status: number; data: { domain_id: any } }) => {
       if (res.status !== 200 || !res.data) {
         throw new Error(errMsg);
       }
       return res.data.domain_id;
     })
-    .catch((error) => {
+    .catch((error: unknown) => {
       throw new Error(`${errMsg}: ${error})`);
     });
 }
